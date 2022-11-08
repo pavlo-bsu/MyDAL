@@ -110,5 +110,84 @@ namespace Pavlo.MyDAL
             inputSR.BaseStream.Position = 0;
             inputSR.DiscardBufferedData();
         }
+
+        /// <summary>
+        /// Emulate the current file as a csv-file recorded by Tektronix 7000 Series
+        /// </summary>
+        /// <param name="outSW">output stream for a file to be written</param>
+        /// <param name="channel">channel of the current file to be written</param>
+        public virtual void EmulateTek70000CSVfile(StreamWriter outSW, int channel)
+        {
+            //SamplesCount should be large enough
+            if (SamplesCount < 10)
+                throw new ArgumentOutOfRangeException("SamplesCount");
+
+            string mainvaluesPreffix = ",,,";
+
+            //'.' is number decimal separator for all double values in the emulated file
+            System.Globalization.NumberFormatInfo nfi = new System.Globalization.NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            //format for double values
+            string dFormat = "e08";
+
+            //preparing header of the file
+            string firstHStr = @"""Record Length"",{0},""Points"",";
+            firstHStr = string.Format(firstHStr, SamplesCount);
+            string secondHStr = @"""Sample Interval"",{0:e08},s,";
+            secondHStr = string.Format(nfi, secondHStr, dt);
+            string thirdHStr = @"""Trigger Point"",{0},""Samples"",";
+            //in general we don't know the trigger settings
+            thirdHStr = string.Format(nfi, thirdHStr, "");
+            //in general we don't know the trigger settings
+            string fourthHStr = @"""Trigger Time"",{0},s,";
+            fourthHStr = string.Format(nfi, fourthHStr, "");
+            string fifthHStr = @""""",,,";
+            string sixthHStr = @"""Horizontal Offset"",{0:e08},s,";
+            sixthHStr = string.Format(nfi, sixthHStr, Times[0]);
+            string seventhHStr = @"""FastFrame Count"",{0},""Frames"",";
+            seventhHStr = String.Format(seventhHStr, FramesCount);
+
+            string[] fileHeader = { firstHStr,secondHStr,thirdHStr,fourthHStr,fifthHStr,sixthHStr,seventhHStr};
+
+            //WRITE THE DATA
+
+                //header with data of first frame
+            StringBuilder tmp= new StringBuilder(100);
+            for (int i = 0; i < fileHeader.Length; i++)
+            {
+                tmp.Clear();
+                tmp.Append(fileHeader[i]);
+                tmp.Append(Times[i].ToString(dFormat, nfi));
+                tmp.Append(',');
+                tmp.Append(Voltages[channel][0][i].ToString(dFormat, nfi));
+                outSW.WriteLine(tmp.ToString());
+            }
+
+                //all remain data of 1st frame
+            for (int i = fileHeader.Length; i < SamplesCount; i++)
+            {
+                tmp.Clear();
+                tmp.Append(mainvaluesPreffix);
+                tmp.Append(Times[i].ToString(dFormat, nfi));
+                tmp.Append(',');
+                tmp.Append(Voltages[channel][0][i].ToString(dFormat, nfi));
+                outSW.WriteLine(tmp.ToString());
+            }
+
+                //all other frames
+            for (int j = 1; j < FramesCount; j++)
+            {
+                for (int i = 0; i < SamplesCount; i++)
+                {
+                    tmp.Clear();
+                    tmp.Append(mainvaluesPreffix);
+                    tmp.Append(Times[i].ToString(dFormat, nfi));
+                    tmp.Append(',');
+                    tmp.Append(Voltages[channel][j][i].ToString(dFormat, nfi));
+                    outSW.WriteLine(tmp.ToString());
+                }
+            }
+        }
     }
 }
