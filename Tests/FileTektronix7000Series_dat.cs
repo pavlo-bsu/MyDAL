@@ -60,7 +60,7 @@ namespace Pavlo.MyDAL.Tests
                     {
                         datTekFile = null;
                     }
-                    if (res == null)
+                    if (datTekFile == null)
                         throw new Exception();
 
                     //reading the voltage data
