@@ -13,7 +13,7 @@ namespace Pavlo.MyDAL.GarbageUtility_TekDatToSCV
     /// Logic of utylity:
     /// 1. Open *.dat files 
     /// 2. Show the first frame(signal) on a window (oxyplot is used)
-    /// 3. Conver *.dat files to *.csv file
+    /// 3. Convert *.dat files to *.csv file
     /// 
     /// All file pathes and etc. are hardcoded in the class. 
     /// I.e. a GARBAGE UTILITY )) for launch it only couple of times.
