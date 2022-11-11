@@ -50,10 +50,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileBaseDeviceTest.cs" />
+    <Compile Include="FileTektronix7000Series_dat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DataFiles\Tek70000example.csv" />
+    <None Include="DataFiles\Tek70000example.dat" />
+    <None Include="DataFiles\Tek70000example_hdr.dat" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
