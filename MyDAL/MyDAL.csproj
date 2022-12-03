@@ -42,8 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="fileBaseDevice.cs" />
+    <Compile Include="FileTektronix2000Series.cs" />
     <Compile Include="FileTektronix7000Series.cs" />
     <Compile Include="FileTektronix7000Series_dat.cs" />
+    <Compile Include="FileLecroyWave.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextFileFiveVariablesStorage.cs" />
     <Compile Include="TextFileTwoVariablesStorage.cs" />
