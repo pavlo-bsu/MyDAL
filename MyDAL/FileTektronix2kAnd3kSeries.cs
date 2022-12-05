@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 namespace Pavlo.MyDAL
 {
     /// <summary>
-    /// class represents a Waveforms saved by Tektronix 2000 series
+    /// class represents a Waveforms saved by Tektronix 2000 or 3000 series
     /// standard oscill. output to file is expected
     /// If there are some channels and math calculation in the file, then math calc. is ignored!
     /// </summary>
-    public class FileTektronix2000Series:FileBaseDevice
+    public class FileTektronix2kAnd3kSeries:FileBaseDevice
     {
 
         private readonly System.Globalization.NumberStyles nStyle = System.Globalization.NumberStyles.AllowExponent | System.Globalization.NumberStyles.AllowLeadingSign | System.Globalization.NumberStyles.AllowDecimalPoint;
         private readonly System.Globalization.CultureInfo nCulture = System.Globalization.CultureInfo.InvariantCulture;
         private readonly int roughHeaderStringsCount;
 
-        public FileTektronix2000Series(StreamReader inStr)
+        public FileTektronix2kAnd3kSeries(StreamReader inStr)
             : base(inStr)
         {
-            roughHeaderStringsCount = 16;
+            roughHeaderStringsCount = 21;   //16 lines for Tektronix 2000 series. 21 lines for Tektronix 3000 series
             this.FramesCount = 1; //always single frame
         }
 
