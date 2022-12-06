@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL", "MyDAL\MyDAL.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{00406A4E-C10D-4570-B8D0-717A488C60B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarbageUtility_TekDatToSCV", "GarbageUtility_TekDatToSCV\GarbageUtility_TekDatToSCV.csproj", "{BD8CE90C-63D9-44DD-9E4A-39013C17D5BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarbageUtility_ToTekSCV", "GarbageUtility_ToTekSCV\GarbageUtility_ToTekSCV.csproj", "{BD8CE90C-63D9-44DD-9E4A-39013C17D5BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

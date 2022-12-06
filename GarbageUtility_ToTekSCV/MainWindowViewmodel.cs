@@ -6,14 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using OxyPlot;
 
-namespace Pavlo.MyDAL.GarbageUtility_TekDatToSCV
+namespace Pavlo.MyDAL.GarbageUtility_ToTekSCV
 {
     /// <summary>
     /// The class contains both viewmodel and model.
     /// Logic of utylity:
-    /// 1. Open *.dat files 
+    /// 1. Open a file with waveform
     /// 2. Show the first frame(signal) on a window (oxyplot is used)
-    /// 3. Convert *.dat files to *.csv file
+    /// 3. Convert file mentioned at step#1 to *.csv file (like recoded by Tektronix 7000 series)
     /// 
     /// All file pathes and etc. are hardcoded in the class. 
     /// I.e. a GARBAGE UTILITY )) for launch it only couple of times.
@@ -25,7 +25,9 @@ namespace Pavlo.MyDAL.GarbageUtility_TekDatToSCV
 
             #region workWithFiles
 
+            /*
             //work with *.dat files
+
             string headerDatFileName = @"D:\file_hdr.dat";
             string datFileName = @"D:\file.dat";
 
@@ -38,6 +40,17 @@ namespace Pavlo.MyDAL.GarbageUtility_TekDatToSCV
                 using (StreamReader headerDataFileSR = new StreamReader(headerDataFileFS, System.Text.Encoding.ASCII))
                 {
                     file = new FileTektronix7000Series_dat(dataFileSR, headerDataFileSR);
+            */
+
+            string datFileName = @"D:\Tek3k.csv";
+
+            FileTektronix2kAnd3kSeries file;
+
+            using (FileStream dataFileFS = new FileStream(datFileName, FileMode.Open))
+            {
+                using (StreamReader dataFileSR = new StreamReader(dataFileFS, System.Text.Encoding.ASCII))
+                {
+                    file = new FileTektronix2kAnd3kSeries(dataFileSR);
                     bool res = file.ProcessFileHeader();
                     if (!res)
                     {
@@ -51,6 +64,8 @@ namespace Pavlo.MyDAL.GarbageUtility_TekDatToSCV
 
                 }
             }
+
+
             #endregion
 
             FillTheOXYPlotModel(file);
@@ -58,13 +73,13 @@ namespace Pavlo.MyDAL.GarbageUtility_TekDatToSCV
         }
 
         /// <summary>
-        /// Conver *.dat files to *.csv file
+        /// Conver file to *.csv file (like recoded by Tektronix 7000 series)
         /// </summary>
         /// <param name="file"></param>
-        private static void SaveTheEmulation(FileTektronix7000Series_dat file)
+        private static void SaveTheEmulation(FileBaseDevice file)
         {
             //save the file
-            string outFileName = @"d:\q.csv";
+            string outFileName = @"d:\Tek7k.csv";
             using (FileStream outFS = new FileStream(outFileName, FileMode.Create, FileAccess.Write, FileShare.None))
             using (StreamWriter outSW = new StreamWriter(outFS, Encoding.ASCII))
             {
@@ -77,6 +92,9 @@ namespace Pavlo.MyDAL.GarbageUtility_TekDatToSCV
             //number of frame to show
             int frame = 0;
 
+            //number of channel to show
+            int channel = 0;
+
             TheModel = new PlotModel();
             TheModel.Title = $"frame #{frame}";
 
@@ -85,7 +103,7 @@ namespace Pavlo.MyDAL.GarbageUtility_TekDatToSCV
 
             for (int i = 0; i < file.SamplesCount; i++)
             {
-                series.Points.Add(new DataPoint(file.Times[i], file.Voltages[0][frame][i]));
+                series.Points.Add(new DataPoint(file.Times[i], file.Voltages[channel][frame][i]));
             }
             TheModel.Series.Add(series);
         }
