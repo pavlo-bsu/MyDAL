@@ -224,6 +224,23 @@ namespace Pavlo.MyDAL
             {
                 return false;
             }
+
+            //check the rest of the file
+            if (inputSR.EndOfStream)
+            {
+                return true;
+                
+            }
+            else
+            {
+                bool res1 = string.IsNullOrEmpty(inputSR.ReadLine());
+                bool res2 = inputSR.EndOfStream;
+                if (res1 & res2)
+                    return true;
+                else
+                    return false;
+            }
+
             return inputSR.EndOfStream;
         }
     }
