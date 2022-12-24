@@ -117,6 +117,15 @@ namespace Pavlo.MyDAL
             int val = 0;
             bool result;
             result = int.TryParse(strSplitted[1], nStyle, nCulture, out val);
+
+            if (result==false)
+            {
+                //Sample Interval value has a double type
+                //for up-to-date version of Tektronix MDO 3 series
+                double dVal = 0d;
+                result = double.TryParse(strSplitted[1], nStyle, nCulture, out dVal);
+                val = (int)dVal;
+            }
             this.SamplesCount = val;
 
             return result;
